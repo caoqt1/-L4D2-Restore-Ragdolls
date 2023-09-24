@@ -1,0 +1,39 @@
+"Games"
+{
+    "left4dead2"
+    {
+        "Signatures"
+        {
+            "CCSPlayer::CreateRagdollEntity"
+            {
+                "library"   "server"
+                "linux"     "@_ZN9CCSPlayer19CreateRagdollEntityERK15CTakeDamageInfo"
+                "windows"   "\x55\x8B\xEC\x51\x53\x56\x57\x8B\xF9\x8B\x87\xA0\x28\x00\x00"
+                            /* 55 8B EC 51 53 56 57 8B F9 8B 87 C0 28 00 00 */
+            }
+            "CTerrorPlayer::Event_Killed"
+            {
+                "library"   "server"
+                "linux"     "@_ZN13CTerrorPlayer12Event_KilledERK15CTakeDamageInfo"
+                "windows"   "\x2A\x2A\x2A\x2A\x2A\x2A\x83\x2A\x2A\x83\x2A\x2A\x55\x8B\x2A\x2A\x89\x2A\x2A\x2A\x8B\x2A\x81\xEC\x2A\x2A\x2A\x2A\xA1\x2A\x2A\x2A\x2A\x33\x2A\x89\x2A\x2A\x8B\x2A\x2A\x56\x8B\x2A\x8B\x2A\x89\x85\x2A\x2A\x2A\x2A\x8B\x82\x2A\x2A\x2A\x2A\x57\xFF\x2A\x8B\x2A\x8B"
+            }
+        }
+        "Functions"
+        {
+            "CTerrorPlayer::Event_Killed"
+            {
+                "signature"     "CTerrorPlayer::Event_Killed"
+                "callconv"      "thiscall"
+                "return"        "void"
+                "this"          "entity"
+                "arguments"
+                {
+                    "info"
+                    {
+                        "type"  "int"
+                    }
+                }
+            }
+        }
+    }
+}
