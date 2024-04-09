@@ -39,20 +39,20 @@ public void OnPluginStart()
 	g_hCreateClientsideRagdoll = EndPrepSDKCall();
 }
 
-public void OnEntityCreated (int entity, const char[] name)
+public void OnEntityCreated(int entity, const char[] name)
 {
 	// Hide the survivor's death model to retain ability to defib
 	if (strcmp(name, "survivor_death_model") == 0)
 		SetEntityRenderMode(entity, RENDER_NONE);
 }
 
-public MRESReturn OnPlayerEventKilled(int client, DHookParam hParams)
+public MRESReturn OnPlayerEventKilled(int iClient, DHookParam hParams)
 {
 	Address g_iDmgInfo = hParams.Get(1);
 	
 	// We only need to do this for survivors, not for infected.
-	if (GetClientTeam(client) == 2)
-		SDKCall(g_hCreateClientsideRagdoll, client, g_iDmgInfo);
+	if (GetClientTeam(iClient) == 2)
+		SDKCall(g_hCreateClientsideRagdoll, iClient, g_iDmgInfo);
 	
 	return MRES_Ignored;
 }
