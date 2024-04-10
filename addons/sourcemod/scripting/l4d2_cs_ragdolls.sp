@@ -5,20 +5,34 @@
 #include <sdktools>
 #include <dhooks>
 
+#define PLUGIN_NAME "[L4D2] Survivor Ragdolls"
+#define PLUGIN_AUTHOR "caoqt"
+#define PLUGIN_DESC "Ragdolls survivors on death."
+#define PLUGIN_VERSION "1.0"
+
 public Plugin myinfo =
 {
-	name = "[L4D2] Restore Survivor Ragdolls",
-	author = "caoqt",
-	description = "Creates ragdolls on death for survivors.",
-	version = "0.2.1",
+	name = PLUGIN_NAME,
+	author = PLUGIN_AUTHOR,
+	description = PLUGIN_DESC,
+	version = PLUGIN_VERSION,
 	url = ""
 };
 
 Handle g_hCreateClientsideRagdoll;
 DynamicDetour g_hEventKilledDetour;
 
+ConVar sm_ragdoll_remove;
+bool g_bRemove;
+
 public void OnPluginStart()
 {
+	sm_ragdoll_remove = CreateConVar("survivor_deathmodel_remove", "0");
+	sm_ragdoll_remove.AddChangeHook(OnConVarChanged);
+	g_bRemove = sm_ragdoll_remove.BoolValue;
+	
+	AutoExecConfig(true, "l4d2_cs_ragdolls");
+	
 	GameData hGameConf = new GameData("l4d2_cs_ragdolls");
 	if (hGameConf == null) {
 		SetFailState("No l4d2_cs_ragdolls gamedata found");
@@ -39,11 +53,20 @@ public void OnPluginStart()
 	g_hCreateClientsideRagdoll = EndPrepSDKCall();
 }
 
+public void OnConVarChanged(ConVar convar, const char[] oldValue, const char[] newValue)
+{
+	g_bRemove = sm_ragdoll_remove.BoolValue;
+}
+
 public void OnEntityCreated(int entity, const char[] name)
 {
-	// Hide the survivor's death model to retain ability to defib
+	// Death model logic
 	if (strcmp(name, "survivor_death_model") == 0)
-		SetEntityRenderMode(entity, RENDER_NONE);
+	{
+		if (g_bRemove)
+			RemoveEntity(entity);
+		else SetEntityRenderMode(entity, RENDER_NONE);
+	}
 }
 
 public MRESReturn OnPlayerEventKilled(int iClient, DHookParam hParams)
